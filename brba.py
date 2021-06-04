@@ -51,7 +51,7 @@ if option == options[1]:
 # Kill count of characters
 if option == options[2]:
     death_table_plot('responsible', 'number_of_deaths',
-                     False, "Top Perpetuator", "Kill Count", "Perpetuator")
+                     False, "Top Perpetrator", "Kill Count", "Perpetrator")
 
 # Raw data
 if option == options[3]:
