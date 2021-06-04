@@ -3,8 +3,10 @@ import matplotlib.pyplot as plt
 import pandas as pd
 import streamlit as st
 import numpy as np
-import matplotlib
 import seaborn as sns
+
+
+# Set plot styl
 sns.set_style("dark")
 
 # Remove Warnings
@@ -16,7 +18,8 @@ deaths = pd.read_csv('deaths.csv')
 
 
 # Selection of method of visualization
-options = ['Season wise deaths', 'Cause of deaths', 'Kill count', 'Raw data']
+options = ['Season wise deaths', 'Cause of deaths',
+           'Kill count of characters', 'Raw data']
 option = st.selectbox('Display Data', options)
 
 
@@ -28,28 +31,34 @@ def death_table_plot(parameter, sort_parameter, is_ascending, graph_title, graph
     st.table(group_cd)
 
     st.header(graph_title)
-    ax = sns.barplot(x='number_of_deaths', y=group_cd.head().index,
-                     data=group_cd.head(), ci=None, palette="muted", orient='h')
-    ax.set_xlabel(graph_x)
-    ax.set_ylabel(graph_y)
+    death_plot = sns.barplot(x='number_of_deaths', y=group_cd.head().index,
+                             data=group_cd.head(), ci=None, palette="muted", orient='h')
+    death_plot.set_xlabel(graph_x)
+    death_plot.set_ylabel(graph_y)
     st.pyplot()
 
 
 # Season wise deaths
 if option == options[0]:
     death_table_plot('season', 'season', True,
-                     "Visualization", "Season", "Deaths")
+                     "Visualization", "Death Count", "Season")
 
 # Cause of deaths
 if option == options[1]:
     death_table_plot('cause', 'number_of_deaths', False,
-                     "Top causes of death", "Cause", "Deaths")
+                     "Top Causes of Death", "Death Count", "Cause")
 
-# Kill count
+# Kill count of characters
 if option == options[2]:
     death_table_plot('responsible', 'number_of_deaths',
-                     False, "Perpetuator", "Cause", "Kills")
+                     False, "Top Perpetuator", "Kill Count", "Perpetuator")
 
 # Raw data
 if option == options[3]:
     st.table(deaths)
+    st.header("Incidents of deaths over the show")
+    death_arr = np.array(deaths.number_of_deaths)
+    plt.plot(death_arr)
+    plt.xlabel("Incidents")
+    plt.ylabel("Death Count")
+    st.pyplot()
